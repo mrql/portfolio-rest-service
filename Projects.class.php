@@ -13,6 +13,14 @@ class Projects
         }
     }
 
+    /* - CRUD-methods - */
+    function addProject($title, $desc, $url)
+    {
+        $sql = $this->dbconn->prepare("INSERT INTO Projects (Title, Description, URL) VALUES (?, ?, ?)");
+        $sql->bind_param('sss', $title, $desc, $url);
+        $sql->execute();
+    }
+
     function getProjects()
     {
         $sql = $this->dbconn->prepare("SELECT * FROM Projects");
@@ -25,24 +33,16 @@ class Projects
             $row_arr['ID'] = $row['ID'];
             $row_arr['Title'] = $row['Title'];
             $row_arr['Description'] = $row['Description'];
-            $row_arr['Image'] = $row['Image'];
             $row_arr['URL'] = $row['URL'];
             array_push($arr, $row_arr);
         }
         return $arr;
     }
 
-    function addProject($title, $desc, $img, $url)
+    function updateProject($title, $desc, $url, $id)
     {
-        $sql = $this->dbconn->prepare("INSERT INTO Projects (Title, Description, Image, URL) VALUES (?, ?, ?, ?)");
-        $sql->bind_param('ssss', $title, $desc, $img, $url);
-        $sql->execute();
-    }
-
-    function updateProject($title, $desc, $img, $url, $id)
-    {
-        $sql = $this->dbconn->prepare("UPDATE Projects SET Title = ?, Description = ?, Image = ?, URL = ? WHERE Code = id");
-        $sql->bind_param('ssssi', $title, $desc, $img, $url);
+        $sql = $this->dbconn->prepare("UPDATE Projects SET Title = ?, Description = ?, URL = ? WHERE ID = ?");
+        $sql->bind_param('sssi', $title, $desc, $url, $id);
         $sql->execute();
     }
 
