@@ -14,6 +14,7 @@ class Occupations
     }
 
     /* - CRUD-methods - */
+    /* - Create - */
     function addOccupation($company, $title, $start, $end)
     {
         $sql = $this->dbconn->prepare("INSERT INTO Occupations (Company, Title, StartDate, EndDate) VALUES (?, ?, ?, ?)");
@@ -21,6 +22,7 @@ class Occupations
         $sql->execute();
     }
 
+    /* - Read - */
     function getOccupations()
     {
         $sql = $this->dbconn->prepare("SELECT * FROM Occupations");
@@ -40,13 +42,15 @@ class Occupations
         return $arr;
     }
 
+    /* - Update - */
     function updateOccupation($id, $company, $title, $start, $end)
     {
-        $sql = $this->dbconn->prepare("UPDATE Occupations SET Company = ?, Title = ?, StartDate = ?, StartDate = ? WHERE ID = ?");
+        $sql = $this->dbconn->prepare("UPDATE Occupations SET Company = ?, Title = ?, StartDate = ?, EndDate = ? WHERE ID = ?");
         $sql->bind_param('ssssi', $company, $title, $start, $end, $id);
         $sql->execute();
     }
 
+    /* - Delete  - */
     function deleteOccupation($id)
     {
         $sql = $this->dbconn->prepare("DELETE FROM Occupations WHERE ID = ?");

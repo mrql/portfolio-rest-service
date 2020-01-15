@@ -14,6 +14,7 @@ class Projects
     }
 
     /* - CRUD-methods - */
+    /* - Create - */
     function addProject($title, $desc, $url)
     {
         $sql = $this->dbconn->prepare("INSERT INTO Projects (Title, Description, URL) VALUES (?, ?, ?)");
@@ -21,6 +22,7 @@ class Projects
         $sql->execute();
     }
 
+    /* - Read - */
     function getProjects()
     {
         $sql = $this->dbconn->prepare("SELECT * FROM Projects");
@@ -39,6 +41,7 @@ class Projects
         return $arr;
     }
 
+    /* - Update - */
     function updateProject($title, $desc, $url, $id)
     {
         $sql = $this->dbconn->prepare("UPDATE Projects SET Title = ?, Description = ?, URL = ? WHERE ID = ?");
@@ -46,6 +49,7 @@ class Projects
         $sql->execute();
     }
 
+    /* - Delete - */
     function deleteProject($id)
     {
         $sql = $this->dbconn->prepare("DELETE FROM Projects WHERE ID = ?");

@@ -14,6 +14,7 @@ class Educations
     }
 
     /* - CRUD-methods - */
+    /* - Create - */
     function addEducation($name, $school, $start, $end, $typeID)
     {
         $sql = $this->dbconn->prepare("INSERT INTO Educations (Name, School, StartDate, EndDate, TypeID) VALUES (?, ?, ?, ?, ?)");
@@ -21,9 +22,9 @@ class Educations
         $sql->execute();
     }
 
+    /* - Read - */
     function getEducations()
     {
-        
         $sql = $this->dbconn->prepare("SELECT Educations.ID, Educations.Name, Educations.School, Educations.StartDate, Educations.EndDate, EducationTypes.Type FROM Educations INNER JOIN EducationTypes ON EducationTypes.ID = Educations.TypeID");
         $sql->execute();
 
@@ -42,29 +43,31 @@ class Educations
         return $arr;
     }
 
-    function getEducationTypes()
-    {
-        $sql = $this->dbconn->prepare("SELECT ID, Type FROM EducationTypes");
-        $sql->execute();
-
-        $arr = [];
-        $result = $sql->get_result();
-        while($row = $result->fetch_assoc())
+        function getEducationTypes()
         {
-            $row_arr['ID'] = $row['ID'];
-            $row_arr['Type'] = $row['Type'];
-            array_push($arr, $row_arr);
-        }
-        return $arr;
-    }
+            $sql = $this->dbconn->prepare("SELECT ID, Type FROM EducationTypes");
+            $sql->execute();
 
+            $arr = [];
+            $result = $sql->get_result();
+            while($row = $result->fetch_assoc())
+            {
+                $row_arr['ID'] = $row['ID'];
+                $row_arr['Type'] = $row['Type'];
+                array_push($arr, $row_arr);
+            }
+            return $arr;
+        }
+
+    /* - Update - */
     function updateEducation($id, $name, $school, $start, $end, $typeID)
     {
-        $sql = $this->dbconn->prepare("UPDATE Educations SET Name = ?, School = ?, StartDate = ?, StartDate = ?, TypeID = ? WHERE ID = ?");
+        $sql = $this->dbconn->prepare("UPDATE Educations SET Name = ?, School = ?, StartDate = ?, EndDate = ?, TypeID = ? WHERE ID = ?");
         $sql->bind_param('ssssii', $name, $school, $start, $end, $typeID, $id);
         $sql->execute();
     }
 
+    /* - Delete - */
     function deleteEducation($id)
     {
         $sql = $this->dbconn->prepare("DELETE FROM Educations WHERE ID = ?");

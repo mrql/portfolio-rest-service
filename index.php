@@ -17,14 +17,39 @@
     
     $method = $_SERVER['REQUEST_METHOD'];
     switch ($method){
+        /* - Create - */
+        case "POST":
+            $input = json_decode(file_get_contents('php://input'), true);
+            switch($input['dataset'])
+            {
+                /* - Projects - */
+                case 'projects':
+                    $projects->addProject($input['title'], $input['description'], $input['url']);
+                    break;
+
+                /* - Educations - */
+                case 'educations':
+                    $educations->addEducation($input['name'], $input['school'], $input['start'], $input['end'], $input['typeID']);            
+                    break;
+
+                /* - Occupations - */
+                case 'occupations':
+                    $occupations->addOccupation($input['company'], $input['title'], $input['start'], $input['end']);
+                    break;
+            }
+            break;
+
+        /* - Read - */
         case "GET":
             $input = json_decode(file_get_contents('php://input'), true);
             switch($input['dataset'])
             {
+                /* - Projects - */
                 case 'projects':
                     echo json_encode($projects->getProjects());
                     break;
 
+                /* - Educations - */
                 case 'educations':
                     $data = array(
                         "educations" => $educations->getEducations(),
@@ -33,59 +58,51 @@
                     echo json_encode($data);
                     break;
 
+                /* - Occupations - */
                 case 'occupations':
                     echo json_encode($occupations->getOccupations());
                     break;
             }
             break;
 
-        case "POST":
-            $input = json_decode(file_get_contents('php://input'), true);
-            switch($input['dataset'])
-            {
-                case 'projects':
-                    $projects->addProject($input['title'], $input['description'], $input['url']);
-                    break;
-
-                case 'educations':
-                    $educations->addEducation($input['name'], $input['school'], $input['start'], $input['end'], $input['typeID']);            
-                    break;
-
-                case 'occupations':
-                    $occupations->addOccupation($input['company'], $input['title'], $input['start'], $input['end']);
-                    break;
-            }
-            break;
-
+        /* - Update - */
         case "PUT":
             $input = json_decode(file_get_contents('php://input'), true);
             switch($input['dataset'])
             {
+                /* - Projects - */
                 case 'projects':
                     $projects->updateProject($input['title'], $input['description'], $input['url'], $input['id']);
                     break;
+                    
+                /* - Educations - */
                 case 'educations':
                     $educations->updateEducation($input['id'], $input['name'], $input['school'], $input['start'], $input['end'], $input['typeID']);
                     break;
 
+                /* - Occupations - */
                 case 'occupations':
                     $occupations->updateOccupation($input['id'], $input['company'], $input['title'], $input['start'], $input['end']);
                     break;
             }
             break;
-            
+        
+        /* - Delete - */
         case "DELETE":
             $input = json_decode(file_get_contents('php://input'), true);
             switch($input['dataset'])
             {
+                /* - Projects - */
                 case 'projects':
                     $projects->deleteProject($input['id']);
                     break;
 
+                /* - Educations - */
                 case 'educations':
                     $educations->deleteEducation($input['id']);
                     break;
-
+                    
+                /* - Occupations - */
                 case 'occupations':
                     $occupations->deleteOccupation($input['id']);
                     break;
@@ -93,6 +110,7 @@
             break;
     }
 
+    // Print all projects, occupations, educations and education types in JSON-format.
     $data = array(
         "projects" => $projects->getProjects(),
         "occupations" => $occupations->getOccupations(),
