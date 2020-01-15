@@ -26,12 +26,10 @@
                     break;
 
                 case 'educations':
-
                     $data = array(
                         "educations" => $educations->getEducations(),
                         "educationTypes" => $educations->getEducationTypes()
                     );
-
                     echo json_encode($data);
                     break;
 
@@ -50,25 +48,25 @@
                     break;
 
                 case 'educations':
-                
-                break;
+                    $educations->addEducation($input['name'], $input['school'], $input['start'], $input['end'], $input['typeID']);            
+                    break;
 
                 case 'occupations':
                     $occupations->addOccupation($input['company'], $input['title'], $input['start'], $input['end']);
                     break;
             }
             break;
-            
+
         case "PUT":
             $input = json_decode(file_get_contents('php://input'), true);
             switch($input['dataset'])
             {
                 case 'projects':
                     $projects->updateProject($input['title'], $input['description'], $input['url'], $input['id']);
-
+                    break;
                 case 'educations':
-                
-                break;
+                    $educations->updateEducation($input['id'], $input['name'], $input['school'], $input['start'], $input['end'], $input['typeID']);
+                    break;
 
                 case 'occupations':
                     $occupations->updateOccupation($input['id'], $input['company'], $input['title'], $input['start'], $input['end']);
@@ -82,16 +80,17 @@
             {
                 case 'projects':
                     $projects->deleteProject($input['id']);
+                    break;
 
                 case 'educations':
-                
-                break;
+                    $educations->deleteEducation($input['id']);
+                    break;
 
                 case 'occupations':
                     $occupations->deleteOccupation($input['id']);
                     break;
             }
-             break;
+            break;
     }
 
     $data = array(
