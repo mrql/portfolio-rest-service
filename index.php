@@ -1,14 +1,14 @@
 <?php
-    // Send headers
+    // Send headers.
     header("Content-Type: application/json; charset=UTF-8");
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Methods: POST, GET, DELETE, PUT");
 
     // Require config-file.
-    require_once 'config.php';
-    require_once 'Projects.class.php';
-    require_once 'Occupations.class.php';
-    require_once 'Educations.class.php';
+    require_once 'includes/config.php';
+    require_once 'includes/classes/Projects.class.php';
+    require_once 'includes/classes/Occupations.class.php';
+    require_once 'includes/classes/Educations.class.php';
 
     // Establish database connection through respective dataset-interface.
     $projects = new Projects($dbhost, $dbuser, $dbpassword, $db);
